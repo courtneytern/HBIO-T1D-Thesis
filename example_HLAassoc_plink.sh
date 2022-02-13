@@ -1,4 +1,6 @@
 #!/bin/sh
+## This script runs HLAassoc and plink on the TEST data
+## to compare the outputs of each. 
 
 module load  gcc/7.1.0  openmpi/3.1.4
 module load python/3.6.8
