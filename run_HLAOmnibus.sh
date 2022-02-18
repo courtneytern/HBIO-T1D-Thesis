@@ -12,7 +12,6 @@
 ####### sbatch /nv/vol185/T1DGC/USERS/cat7ep/T1D-Thesis/run_HLAOmnibus.sh
 
 module load  gcc/7.1.0  openmpi/3.1.4 R/3.6.3
-module load python/3.6.8
 module load anaconda
 
 cd /nv/vol185/T1DGC/USERS/cat7ep/HLA-TAPAS
@@ -20,20 +19,20 @@ cd /nv/vol185/T1DGC/USERS/cat7ep/HLA-TAPAS
 vcfPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
 vcfFileName="filtered021322.recode.vcf.gz"
 
-filePath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
+bimPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
 bimFile="filtered021322.bim"
-famFile="filtered021322.fam"
 
-phePath="/nv/vol185/T1DGC/USERS/cat7ep/data"
+filePath="/nv/vol185/T1DGC/USERS/cat7ep/data"
+famFile="T1DGC_HCE-noheader.fam"
 phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
 
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus"
 
 python -m HLAassoc OMNIBUS \
     --vcf $vcfPath/${vcfFileName} \
-    --bim $filePath/${bimFile} \
+    --bim $bimPath/${bimFile} \
     --fam $filePath/${famFile} \
-    --pheno $phePath/${phenoFile} \
+    --pheno $filePath/${phenoFile} \
     --out $outPath/multiethnic.OMNIBUS \
     --aa-only \
     --maf-threshold 0
