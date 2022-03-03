@@ -2,39 +2,27 @@
 # R 
 
 library(ggplot2)
-# library(scales)
 # hla_alleles_imputed <- read.table("/m/CPHG/T1DGC/USERS/cat7ep/project/snp2hla_hla_intron_exon.txt", sep = "", header = F)
 
 ######################
 ## FILTERING/SETUP ### 
 ######################
 # Outputs a summary table with the number of each type of gene imputed
-
-#### Multiethnic panel
-filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/chr6.info")
-# HLA  SNPs Indels   AA
-# 924 49116    162 3473
-
-#### 1KG panel
-filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/1KG_imputed_032321/chr6.info")
-# HLA  SNPs Indels   AA
-# 387 67106    116 1027
-
 filterSteps<- function(info.file.path){ 
   T1DGC_6 <- read.table(info.file.path, sep = "", header = T)
   length(T1DGC_6[[1]])
   # 55615 lines (minus header) before filtering
-
+  
   #Generate list of SNPs that are filtered out 
   SNPs_filteredOut<- T1DGC_6[which(T1DGC_6['Rsq']<0.3),]$SNP
   length(SNPs_filteredOut)
   # 1942 SNPs removed
-
+  
   # Do the filtering 
   T1DGC_6_filtered <- T1DGC_6[which(T1DGC_6['Rsq']>0.3),]
   length(T1DGC_6_filtered[[1]])
   # 53673 lines (minus header) after filtering
-
+  
   SNPs_kept<- T1DGC_6_filtered$SNP
   SNPs_HLA<- SNPs_kept[grep("HLA",SNPs_kept)] # hla alleles
   length(SNPs_HLA) #924
@@ -46,7 +34,7 @@ filterSteps<- function(info.file.path){
   length(SNPs_indel) # 162
   SNPs_AA<- SNPs_kept[grep("AA",SNPs_kept)] # amino acids
   length(SNPs_AA) #3473
-
+  
   # summary table of # snps kept in each category
   filtered_summary<- data.frame(HLA=length(SNPs_HLA),
                                 SNPs= length(SNPs_rsSNPs)+length(SNPs_SNPS),
@@ -54,6 +42,23 @@ filterSteps<- function(info.file.path){
                                 AA=length(SNPs_AA))
   filtered_summary
 }
+
+#### 1KG panel
+filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/1KG_imputed_032321/chr6.info")
+# HLA  SNPs Indels   AA
+# 387 67106    116 1027
+
+#### Multiethnic panel
+filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/chr6.info")
+# HLA  SNPs Indels   AA
+# 924 49116    162 3473
+
+## Get the list of low Rsq values from multiethnic panel
+multi_info_path<- "/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/chr6.info"
+multi_info <- read.table(multi_info_path, sep = "", header = T)
+SNPs_filteredOut<- multi_info[which(multi_info['Rsq']<0.3),]$SNP
+write.table(SNPs_filteredOut,"/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/lowRsqSNPs.txt",
+            quote=F,row.names=F,col.names=F)
 
 #################
 ## MAKE PLOTS ###
