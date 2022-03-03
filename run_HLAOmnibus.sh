@@ -36,3 +36,32 @@ python -m HLAassoc OMNIBUS \
     --out $outPath/multiethnic.OMNIBUS \
     --aa-only \
     --maf-threshold 0
+
+##################
+## AFR and AMR ###
+##################
+cd /nv/vol185/T1DGC/USERS/cat7ep/HLA-TAPAS
+
+vcfPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
+AFR_vcf="T1DGC_HCE_AFR-only.vcf"
+AMR_vcf="T1DGC_HCE_AMR-only.vcf"
+
+bimPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
+AFR_bim="T1DGC_HCE_AFR-only.bim"
+AMR_bim="T1DGC_HCE_AMR-only.bim"
+
+filePath="/nv/vol185/T1DGC/USERS/cat7ep/data"
+AFR_fam="T1DGC_HCE_cc_AFR-2021-01-20.fam"
+AMR_fam="T1DGC_HCE_cc_AMR-2021-01-20.fam"
+phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
+
+outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus"
+
+python -m HLAassoc OMNIBUS \
+    --vcf $vcfPath/${AMR_vcf} \
+    --bim $bimPath/${AMR_bim} \
+    --fam $filePath/${AMR_fam} \
+    --pheno $filePath/${phenoFile} \
+    --out $outPath/T1DGC_HCE_AMR.OMNIBUS \
+    --aa-only \
+    --maf-threshold 0
