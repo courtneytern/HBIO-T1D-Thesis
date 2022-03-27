@@ -58,10 +58,9 @@ phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus"
 
 python -m HLAassoc OMNIBUS \
-    --vcf $vcfPath/${AMR_vcf} \
-    --bim $bimPath/${AMR_bim} \
-    --fam $filePath/${AMR_fam} \
+    --vcf $vcfPath/${AFR_vcf} \
+    --bim $bimPath/${AFR_bim} \
+    --fam $filePath/${AFR_fam} \
     --pheno $filePath/${phenoFile} \
-    --out $outPath/T1DGC_HCE_AMR.OMNIBUS \
-    --aa-only \
+    --out $outPath/T1DGC_HCE_AFR.OMNIBUS.noaa \
     --maf-threshold 0
