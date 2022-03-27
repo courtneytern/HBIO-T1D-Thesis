@@ -7,9 +7,18 @@
 library(data.table)
 library(dplyr)
 
-setwd("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus")
+#set wd: Session > Set Working Directory > Choose Directory , then select CPHG from Finder 
+setwd("./data/multiethnic_imputed/chr_6/omnibus")
 AFR_omnibus<- fread("./T1DGC_HCE_AFR.OMNIBUS.txt",header = T)
+AFR_n30<- AFR_omnibus[,][N_HAPLO>30] 
+  #head(AFR_omnibus[order(AFR_omnibus$PVALUE),], 10)
+AFR_omni_noAA<- fread("./T1DGC_HCE_AFR.OMNIBUS.noaa.txt",header = T) # without --aa-only flag
+AFR_noAA_n30<- AFR_omni_noAA[,][N_HAPLO>30] 
+
 AMR_omnibus<- fread("./T1DGC_HCE_AMR.OMNIBUS.txt",header = T)
+AMR_n30<- AMR_omnibus[,][N_HAPLO>30] 
+AMR_omni_noAA<- fread("./T1DGC_HCE_AMR.OMNIBUS.noaa.txt",header = T) # without --aa-only flag
+AMR_noAA_n30<- AMR_omni_noAA[,][N_HAPLO>30]
 
 top10<- cbind(AFR=head(AFR_omnibus$AA_ID,10),AMR=head(AMR_omnibus$AA_ID,10))
 top10
