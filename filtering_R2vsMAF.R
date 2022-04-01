@@ -55,10 +55,31 @@ filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/chr6.i
 
 ## Get the list of low Rsq values from multiethnic panel
 multi_info_path<- "/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/chr6.info"
-multi_info <- read.table(multi_info_path, sep = "", header = T)
-SNPs_filteredOut<- multi_info[which(multi_info['Rsq']<0.3),]$SNP
-write.table(SNPs_filteredOut,"/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/lowRsqSNPs.txt",
+multi_info <- fread(multi_info_path, sep = "\t", header = T)
+SNPs_filteredOut<- multi_info[which((multi_info['Rsq']<0.5)|(multi_info['MAF']<0.005)),]$SNP
+write.table(SNPs_filteredOut,"/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/filteredOutSNPs.txt",
             quote=F,row.names=F,col.names=F)
+
+### Summary tables
+# set wd to /nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6
+prefilter<- fread("chr6.info")
+filtered<- fread("filtered032722.map")
+  colnames(filtered)<- c("CHR","SNP","V3","V4")
+excluded<- fread("filteredOutSNPs.txt")
+  colnames(excluded)<- c("SNP")
+
+table3<- function(dat){
+  HLA<- dat[grepl("HLA",dat$SNP)]
+  AA<- dat[grepl("AA",dat$SNP)]
+  SNP<- dat[(grepl("SNP",dat$SNP)) | (grepl("rs",dat$SNP))]
+  data.table( HLA=length(HLA[[1]]),AA=length(AA[[1]]),SNP=length(SNP[[1]]),
+              sum=length(HLA[[1]])+length(AA[[1]])+length(SNP[[1]]),
+              total=length(dat[[1]])
+            )
+}
+table3(prefilter)
+table3(filtered)
+table3(excluded)
 
 #################
 ## MAKE PLOTS ###
