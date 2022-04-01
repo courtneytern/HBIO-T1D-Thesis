@@ -22,22 +22,26 @@ vcf.file[positions==min(positions),]$V3
 #################
 ## Count male/female and case/control in AFR and AMR 
 
-setwd("/nv/vol185/T1DGC/USERS/cat7ep/data")
+#setwd to cat7ep
+setwd("./data")
 famFileAFR<- read.table("T1DGC_HCE_cc_AFR-2021-01-20.fam")
 famFileAMR<- read.table("T1DGC_HCE_cc_AMR-2021-01-20.fam")
+famFileEUR<- read.table("T1DGC_HCE_family-2021-01-20.fam")
 
 countSex<- function(famFile){
   male<- length(famFile$V5[famFile$V5==1]) 
   female<- length(famFile$V5[famFile$V5==2]) 
-  data.frame(male=male,female=female)
+  data.frame(male=male,female=female,total=male+female)
 }
 countSex(famFileAFR)
 countSex(famFileAMR)
+countSex(famFileEUR)
 
 countCaseControl<- function(famFile){
   control<- length(famFile$V5[famFile$V6==1]) 
   case<- length(famFile$V5[famFile$V6==2]) 
-  data.frame(control=control,case=case)
+  data.frame(case=case,control=control)
 }
 countCaseControl(famFileAFR)
 countCaseControl(famFileAMR)
+countCaseControl(famFileEUR)
