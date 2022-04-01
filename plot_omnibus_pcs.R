@@ -7,26 +7,64 @@
 library(lattice)
 library(data.table)
 
-setwd("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus")
+# setwd("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus")
 # setwd("~/Downloads")
+# read in pheno file with sex and case-control info
+pheno<- fread("./data/T1DGC_HCE-2021-10-07_CT.phe")
+pheno<- pheno[,c(2:4)] # drop duplicate
 ## COLOR CODE BY CASE-CONTROL AND SEX
-AFR<- fread("./T1DGC_HCE_AFR.OMNIBUS.pcs")
-  AFR$FID<- as.character(AFR$FID)
-AFR_sex<- fread("./T1DGC_HCE_AFR.OMNIBUS.sex")
-withSexAFR<- merge(AFR,AFR_sex,by.x=c("FID","IID"),by.y=c("V1","V2"),all.x=T)
-# color by sex
-AFRPlot<- splom(withSexAFR[,3:12], groups=withSexAMR$V3, auto.key=list(space="right"),
-                main="AFR Omnibus PC Associations By Sex", xlab="PCs 1-10",ylab="PCs 1-10")
+AFR<- fread("./data/multiethnic_imputed/chr_6/omnibus/T1DGC_HCE_AFR.OMNIBUS.pcs")
+  AFR$IID<- as.character(AFR$IID)
+withSexAFR<- merge(AFR,pheno,by.x=c("IID"),by.y=c("IID"),all.x=T)
+withSexAFR<- withSexAFR[,c(1:7,13,14)] # keep only first 5 PCs 
+#color by sex (male=1, female=2)
+AFRPlot<- splom(withSexAFR[,3:7], groups=withSexAFR$p1, auto.key=list(space="right",text=c("Male","Female")),
+                main="AFR Omnibus PC Associations by Sex", xlab="PCs 1-5",ylab="PCs 1-5",
+                par.settings = list(superpose.symbol = list(col = c("darkorange", "darkblue"))) 
+                )
+# color by Case-Control
+AFRPlot2<- splom(withSexAFR[,3:7], groups=withSexAFR$p2, auto.key=list(space="right",text=c("Control","Case")),
+                main="AFR Omnibus PC Associations by Case-Control", xlab="PCs 1-5",ylab="PCs 1-5",
+                par.settings = list(superpose.symbol = list(col = c("deeppink3", "darkgray"))) 
+                )
 
-AMR<- fread("./T1DGC_HCE_AMR.OMNIBUS.pcs")
-  AMR$FID<- as.character(AMR$FID)
-AMR_sex<- fread("./T1DGC_HCE_AMR.OMNIBUS.sex")
-withSexAMR<- merge(AMR,AMR_sex,by.x=c("FID","IID"),by.y=c("V1","V2"),all.x=T)
+AMR<- fread("./data/multiethnic_imputed/chr_6/omnibus/T1DGC_HCE_AMR.OMNIBUS.pcs")
+  AMR$IID<- as.character(AMR$IID)
+withSexAMR<- merge(AMR,pheno,by.x=c("IID"),by.y=c("IID"),all.x=T)
+withSexAMR<- withSexAMR[,c(1:7,13,14)] # keep only first 5 PCs 
 # color by sex
-AMRPlot<- splom(withSexAMR[,3:12], groups=withSexAMR$V3, auto.key=list(space="right"), 
-                main="AMR Omnibus PC Associations By Sex", xlab="PCs 1-10",ylab="PCs 1-10")
+AMRPlot<- splom(withSexAMR[,3:7], groups=withSexAMR$p1, auto.key=list(space="right",text=c("Male","Female")), 
+                main="AMR Omnibus PC Associations by Sex", xlab="PCs 1-5",ylab="PCs 1-5",
+                par.settings = list(superpose.symbol = list(col = c("darkorange", "darkblue"))) 
+                )
+# color by Case-Control
+AMRPlot2<- splom(withSexAMR[,3:7], groups=withSexAMR$p2, auto.key=list(space="right",text=c("Control","Case")), 
+                main="AMR Omnibus PC Associations by Case-Control", xlab="PCs 1-5",ylab="PCs 1-5",
+                par.settings = list(superpose.symbol = list(col = c("deeppink3", "darkgray"))) 
+                )
+
+EUR<- fread("./data/T1DGC_HCE_pc_EUR.txt")
+EUR_5<- EUR[,c(1,2,5:11)]
+EUR_sex<- splom(EUR[,7:11], groups=EUR_5$SEX, auto.key=list(space="right",text=c("Male","Female")), 
+               main="EUR PC Associations by Sex", xlab="PCs 1-5",ylab="PCs 1-5",
+               par.settings = list(superpose.symbol = list(col = c("darkorange", "darkblue"))) 
+)
+EUR_cc<- splom(EUR[,7:11], groups=EUR_5$AFF, auto.key=list(space="right",text=c("Control","Case")), 
+                 main="EUR PC Associations by Case-Control", xlab="PCs 1-5",ylab="PCs 1-5",
+                 par.settings = list(superpose.symbol = list(col = c("deeppink3", "darkgray"))) 
+)
+
+# just pcs 1 and 2
+EUR_pc1_2_sex<- ggplot(EUR[,7:8],aes(x=EUR$PC1,y=EUR$PC2,col=as.factor(EUR$SEX))) + geom_point()
+EUR_pc1_2_cc<- ggplot(EUR[,7:8],aes(x=EUR$PC1,y=EUR$PC2,col=as.factor(EUR$AFF))) + geom_point()
+
 
 pdf("/nv/vol185/T1DGC/USERS/cat7ep/project/figures/omnibusPlots_AFR_AMR_bysex.pdf")
   AFRPlot
   AMRPlot
+dev.off()
+
+pdf("/nv/vol185/T1DGC/USERS/cat7ep/project/figures/omnibusPlots_AFR_AMR_byCC.pdf")
+  AFRPlot2
+  AMRPlot2
 dev.off()
