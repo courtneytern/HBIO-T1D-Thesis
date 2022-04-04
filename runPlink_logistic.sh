@@ -28,10 +28,10 @@ vcfFileName="filtered032722.vcf.gz"
 
 filterPath="/nv/vol185/T1DGC/USERS/cat7ep/data"
 phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
-keepFile="T1DGC_HCE_AFR_FINAL_sample_list.txt"
-covarFile="T1DGC_HCE_AFR_FINAL_cov.txt"
+keepFile="T1DGC_HCE_AMR_FINAL_sample_list.txt"
+covarFile="T1DGC_HCE_AMR_FINAL_cov.txt"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg"
-outStem="AFR_only"
+outStem="AMR_only"
 # 1KG imputed out stem:
 ## outStem="1KG.AMR_only"
 
