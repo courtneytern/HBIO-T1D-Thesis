@@ -7,6 +7,10 @@
 library(data.table)
 library(dplyr)
 
+##############
+## omnibus ###
+##############
+
 #set wd: Session > Set Working Directory > Choose Directory , then select CPHG from Finder 
 setwd("./data/multiethnic_imputed/chr_6/omnibus")
 AFR_omnibus<- fread("./T1DGC_HCE_AFR.OMNIBUS.txt",header = T)
@@ -33,3 +37,24 @@ top10
 # [8,] "AA_A_167_29911273" "AA_B_296_31322937"
 # [9,] "AA_A_186_29911909" "AA_B_298_31322931"
 # [10,] "AA_A_194_29911933" "AA_B_299_31322928"
+
+##############
+## logistic ##
+##############
+# get the top HLA and AA from each ancestry's logistic regression
+setwd("./data/multiethnic_imputed/chr_6/logistic_reg")
+AFRlog<- fread("AFR_only.assoc.logistic")
+AMRlog<- fread("AMR_only.assoc.logistic")
+EURlog<- fread("EUR_only.assoc.logistic")
+
+topHLA_AA<- function(dat){
+  datHLA<- dat[grepl("HLA",dat$SNP)]
+  print(datHLA[order(datHLA$P)][1])
+  
+  datAA<- dat[grepl("AA",dat$SNP)]
+  print(datAA[order(datAA$P)][1])
+}
+
+topHLA_AA(AFRlog)
+topHLA_AA(AMRlog)
+topHLA_AA(EURlog)
