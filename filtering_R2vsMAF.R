@@ -14,42 +14,46 @@ filterSteps<- function(info.file.path){
   # 55615 lines (minus header) before filtering
   
   #Generate list of SNPs that are filtered out 
-  SNPs_filteredOut<- T1DGC_6[which(T1DGC_6['Rsq']<0.3),]$SNP
-  length(SNPs_filteredOut)
-  # 1942 SNPs removed
+  SNPs_filteredOut<- T1DGC_6[(T1DGC_6['Rsq']<0.5)|(T1DGC_6['MAF']<0.005),]$SNP
+  #length(SNPs_filteredOut)
+  SNPs_HLA<- SNPs_filteredOut[grep("HLA",SNPs_filteredOut)] # hla alleles
+  SNPs_rsSNPs<- SNPs_filteredOut[grep("rs",SNPs_filteredOut)] # rs snp ID 
+  SNPs_SNPS<- SNPs_filteredOut[grep("SNPS",SNPs_filteredOut)] #snps marked as SNPS_DB...
+  SNPs_AA<- SNPs_filteredOut[grep("AA",SNPs_filteredOut)] # amino acids
+  filtered_out<- data.frame(out_HLA=length(SNPs_HLA),
+                            out_SNPs= length(SNPs_rsSNPs)+length(SNPs_SNPS),
+                            out_AA=length(SNPs_AA),
+                            out_total=length(SNPs_HLA)+length(SNPs_rsSNPs)+length(SNPs_SNPS)+length(SNPs_AA)
+  )
+  print(filtered_out)
   
   # Do the filtering 
-  T1DGC_6_filtered <- T1DGC_6[which(T1DGC_6['Rsq']>0.3),]
+  T1DGC_6_filtered <- T1DGC_6[(T1DGC_6['Rsq']>0.5)|(T1DGC_6['MAF']>0.005),]
   length(T1DGC_6_filtered[[1]])
   # 53673 lines (minus header) after filtering
   
   SNPs_kept<- T1DGC_6_filtered$SNP
   SNPs_HLA<- SNPs_kept[grep("HLA",SNPs_kept)] # hla alleles
-  length(SNPs_HLA) #924
   SNPs_rsSNPs<- SNPs_kept[grep("rs",SNPs_kept)] # rs snp ID 
-  length(SNPs_rsSNPs) #38397
-  SNPs_SNPS<- SNPs_kept[grep("^SNPS",SNPs_kept)] #snps marked as SNPS_DB...
-  length(SNPs_SNPS) # 10719
-  SNPs_indel<- SNPs_kept[grep("INDEL",SNPs_kept)] #snps marked as INDEL
-  length(SNPs_indel) # 162
+  SNPs_SNPS<- SNPs_kept[grep("SNPS",SNPs_kept)] #snps marked as SNPS_DB...
   SNPs_AA<- SNPs_kept[grep("AA",SNPs_kept)] # amino acids
-  length(SNPs_AA) #3473
-  
+
   # summary table of # snps kept in each category
   filtered_summary<- data.frame(HLA=length(SNPs_HLA),
                                 SNPs= length(SNPs_rsSNPs)+length(SNPs_SNPS),
-                                Indels=length(SNPs_indel),
-                                AA=length(SNPs_AA))
+                                AA=length(SNPs_AA),
+                                total=length(SNPs_HLA)+length(SNPs_rsSNPs)+length(SNPs_SNPS)+length(SNPs_AA)
+                                )
   filtered_summary
 }
 
 #### 1KG panel
-filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/1KG_imputed_032321/chr6.info")
+filterSteps("./data/1KG_imputed_032321/chr6.info")
 # HLA  SNPs Indels   AA
 # 387 67106    116 1027
 
 #### Multiethnic panel
-filterSteps("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/chr6.info")
+filterSteps("./data/multiethnic_imputed/chr_6/chr6.info")
 # HLA  SNPs Indels   AA
 # 924 49116    162 3473
 
@@ -60,7 +64,9 @@ SNPs_filteredOut<- multi_info[which((multi_info['Rsq']<0.5)|(multi_info['MAF']<0
 write.table(SNPs_filteredOut,"/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/filteredOutSNPs.txt",
             quote=F,row.names=F,col.names=F)
 
-### Summary tables
+####################
+## Summary tables ##
+####################
 # set wd to /nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6
 prefilter<- fread("chr6.info")
 filtered<- fread("filtered032722.map")
@@ -84,27 +90,30 @@ table3(excluded)
 #################
 ## MAKE PLOTS ###
 #################
+multi<- fread("./data/multiethnic_imputed/chr_6/chr6.info")
+oneKG<- fread("./data/1KG_imputed_032321/chr6.info")
 
 # Scatter plot of MAF vs Rsq (chromosome 6 T1DGC)
 # do for pdf and jpg
 # jpeg(file="/m/CPHG/T1DGC/USERS/cat7ep/r2mafQC.jpg")
-jpeg(file="/nv/vol185/T1DGC/USERS/cat7ep/project/figures/112421_1KG_IMPUTED_r2mafQC.jpg")
-ggplot( T1DGC_6 , aes(x = Rsq, y = MAF)) + 
-  geom_point(size = 1.5, color = "black", fill="black") +
+#jpeg(file="./project/figures/040122_1KG_IMPUTED_r2mafQC.jpg")
+ggplot( multi , aes(x = Rsq, y = MAF)) + 
+  geom_point(size = 1.5, color = "black") +
+  geom_vline(xintercept=0.3, color="red") + geom_hline(yintercept=0.005, color="red") +
   labs(x = "Rsq", y = "MAF") +
-  ggtitle("1KG Reference Panel (T1DGC)") +
+  ggtitle("Imputed on Multiethnic Reference Panel") +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))
-dev.off()
+#dev.off()
 
-jpeg(file="/nv/vol185/T1DGC/USERS/cat7ep/project/figures/112421_1KG_IMPUTED_r2mafQC_filtered.jpg")
-ggplot( T1DGC_6_filtered , aes(x = Rsq, y = MAF)) + 
-  geom_point(size = 1.5, color = "black", fill="black") +
+#jpeg(file="/nv/vol185/T1DGC/USERS/cat7ep/project/figures/040122_1KG_IMPUTED_r2mafQC_filtered.jpg")
+ggplot( multi[((Rsq>0.5)&(MAF>0.005)),] , aes(x = Rsq, y = MAF)) + 
+  geom_point(size = 1.5, color = "black") +
   labs(x = "Rsq", y = "MAF") +
-  ggtitle("1KG Reference Panel (T1DGC) Filtered") +
+  ggtitle("Imputed on Multiethnic Reference Panel (Filtered)") +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))
-dev.off()
+#dev.off()
 
 # jpeg(file="/m/CPHG/T1DGC/USERS/cat7ep/project/r2mafQC_hla_alleles.jpg")
 # ggplot( hla_alleles_imputed , aes(x = Rsq, y = MAF)) + 
