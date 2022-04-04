@@ -2,6 +2,8 @@
 This repository contains the code used in Courtney Tern's thesis for the Distinguished Majors Program in Human Biology 2022. This code takes imputed data and conducts quality control and association tests.
 <br>
 
+### QC/Analysis Pipeline 
+
 1. filterVCF_makeBinary.sh
 2. updateFamIDs.sh
 2. generatePCs.sh
@@ -12,7 +14,7 @@ This repository contains the code used in Courtney Tern's thesis for the Disting
 7. stepwise_analysis.sh and stepwise_analysis_AA.sh
 8. findTop_stepwise.R
 
-### Plots
+### Make Plots
 * plot_PCs.R
   - Makes scatter plot matrix comparing all PCs against each other
 * plot_allPops_MAFstepwise.R
