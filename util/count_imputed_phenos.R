@@ -26,7 +26,7 @@ vcf.file[positions==min(positions),]$V3
 setwd("./data")
 famFileAFR<- read.table("T1DGC_HCE_cc_AFR-2021-01-20.fam")
 famFileAMR<- read.table("T1DGC_HCE_cc_AMR-2021-01-20.fam")
-famFileEUR<- read.table("T1DGC_HCE_family-2021-01-20.fam")
+famFileEUR<- read.table("./data/multiethnic_imputed/chr_6/T1DGC_HCE_unrelated_EUR.fam")
 
 countSex<- function(famFile){
   male<- length(famFile$V5[famFile$V5==1]) 
@@ -40,7 +40,7 @@ countSex(famFileEUR)
 countCaseControl<- function(famFile){
   control<- length(famFile$V5[famFile$V6==1]) 
   case<- length(famFile$V5[famFile$V6==2]) 
-  data.frame(case=case,control=control)
+  data.frame(case=case,control=control,total=case+control)
 }
 countCaseControl(famFileAFR)
 countCaseControl(famFileAMR)
