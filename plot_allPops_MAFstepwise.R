@@ -6,53 +6,69 @@ library(ggplot2)
 
 setwd("./data/multiethnic_imputed/chr_6")
 
-AFRfrq<- fread("filtered032722_AFR.frq")
-AMRfrq<- fread("filtered032722_AMR.frq")
-EURfrq<- fread("filtered032722_EUR.frq")
+AFRfrq<- fread("filtered041222_AFR.frq.cc")
+AMRfrq<- fread("filtered041222_AMR.frq.cc")
+EURfrq<- fread("filtered041222_EUR.frq.cc")
 
 ##########
 ## HLA ###
 ##########
 HLA<- list("HLA_DRB1*03:01","HLA_DQA1*03:01","HLA_DQB1*06:02","HLA_DQB1*02:01",
-           "HLA_DQB1*03:01","HLA_DRB1*07:01","HLA_DQA1*01:03")
+           "HLA_DQB1*03:02","HLA_DRB1*04:01","HLA_DQB1*03:01","HLA_B*39:06",
+           "HLA_DQB1*03:03")
 
-dat<- data.table()
+dat_HLA<- data.table()
 for(i in 1:length(HLA)){
-  dat<- rbind(dat, data.table(pop="AFR",AFRfrq[which(AFRfrq$SNP==HLA[i]),c("SNP","MAF")]) )
-  dat<- rbind(dat, data.table(pop="AMR",AMRfrq[which(AMRfrq$SNP==HLA[i]),c("SNP","MAF")]) )
-  dat<- rbind(dat, data.table(pop="EUR",AFRfrq[which(EURfrq$SNP==HLA[i]),c("SNP","MAF")]) )
+  dat_HLA<- rbind(dat_HLA, data.table(pop="AFR",AFRfrq[which(AFRfrq$SNP==HLA[i]),c("SNP","MAF_A","MAF_U")]) )
+  dat_HLA<- rbind(dat_HLA, data.table(pop="AMR",AMRfrq[which(AMRfrq$SNP==HLA[i]),c("SNP","MAF_A","MAF_U")]) )
+  dat_HLA<- rbind(dat_HLA, data.table(pop="EUR",EURfrq[which(EURfrq$SNP==HLA[i]),c("SNP","MAF_A","MAF_U")]) )
 }
-dat
+dat_HLA
 
 # plot
-ggplot(dat,aes(x=SNP,y=MAF,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+# case
+ggplot(dat_HLA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+  scale_fill_manual(values=c("lightpink","palevioletred","deeppink4")) +
+  theme(axis.text.x=element_text(angle=45,hjust=1)) + 
+  xlab("HLA Allele") + ylab("Allele Frequency") +
+  labs(title="Allele Frequency by HLA Allele in Cases")
+# control
+ggplot(dat_HLA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_bar(stat="identity",position="dodge") +
   scale_fill_manual(values=c("lightskyblue","cornflowerblue","blue4")) +
   theme(axis.text.x=element_text(angle=45,hjust=1)) + 
-  xlab("HLA Allele") + ylab("Minor Allele Frequency") +
-  labs(title="Minor Allele Frequency by HLA Allele",subtitle="in AFR, AMR, and EUR ancestry groups")
+  xlab("HLA Allele") + ylab("Allele Frequency") +
+  labs(title="Allele Frequency by HLA Allele in Controls")
 
 #########
 ## AA ###
 #########
-setwd("/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/")
+setwd("./data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/")
 AFRtop<- fread("./AFR_top_stats.txt",header=F)
 AMRtop<- fread("./AMR_top_stats.txt",header=F)
-AFRtop2<- fread("./generatedPCs/AFR_top_stats.txt",header=F)
-AMRtop2<- fread("./generatedPCs/AMR_top_stats.txt",header=F)
-EURtop2<- fread("./generatedPCs/EUR_top_stats.txt",header=F)
-AA<- rbind(AFRtop[,"V2"],AMRtop[,"V2"],AFRtop2[,"V2"],AMRtop2[,"V2"],EURtop2[,"V2"])
+EURtop<- fread("./EUR_top_stats.txt",header=F)
+# AFRtop2<- fread("./generatedPCs/AFR_top_stats.txt",header=F)
+# AMRtop2<- fread("./generatedPCs/AMR_top_stats.txt",header=F)
+# EURtop2<- fread("./generatedPCs/EUR_top_stats.txt",header=F)
+AA<- rbind(AFRtop[,"V2"],AMRtop[,"V2"],EURtop[,"V2"])
 
-dat<- data.table()
+dat_AA<- data.table()
 for(i in 1:length(AA$V2)){
-  dat<- rbind(dat, data.table(pop="AFR",AFRfrq[which(AFRfrq$SNP==AA$V2[i]),c("SNP","MAF")]) )
-  dat<- rbind(dat, data.table(pop="AMR",AMRfrq[which(AMRfrq$SNP==AA$V2[i]),c("SNP","MAF")]) )
-  dat<- rbind(dat, data.table(pop="EUR",AFRfrq[which(EURfrq$SNP==AA$V2[i]),c("SNP","MAF")]) )
+  dat_AA<- rbind(dat_AA, data.table(pop="AFR",AFRfrq[which(AFRfrq$SNP==AA$V2[i]),c("SNP","MAF_A","MAF_U")]) )
+  dat_AA<- rbind(dat_AA, data.table(pop="AMR",AMRfrq[which(AMRfrq$SNP==AA$V2[i]),c("SNP","MAF_A","MAF_U")]) )
+  dat_AA<- rbind(dat_AA, data.table(pop="EUR",EURfrq[which(EURfrq$SNP==AA$V2[i]),c("SNP","MAF_A","MAF_U")]) )
 }
-dat
+dat_AA
 
 # plot
-ggplot(dat,aes(x=SNP,y=MAF,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+# case
+ggplot(dat_AA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+  scale_fill_manual(values=c("lightpink","palevioletred","deeppink4")) +
+  theme(axis.text.x=element_text(angle=70,hjust=1)) + 
+  xlab("Amino Acid Polymorphism") + ylab("Allele Frequency") +
+  labs(title="Allele Frequency by AA Polymorphism in Cases")
+# control
+ggplot(dat_AA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_bar(stat="identity",position="dodge") +
   scale_fill_manual(values=c("lightskyblue","cornflowerblue","blue4")) +
   theme(axis.text.x=element_text(angle=70,hjust=1)) + 
-  xlab("Amino Acid") + ylab("Minor Allele Frequency") +
-  labs(title="Minor Allele Frequency by Amino Acid",subtitle="in AFR, AMR, and EUR ancestry groups")
+  xlab("Amino Acid Polymorphism") + ylab("Allele Frequency") +
+  labs(title="Allele Frequency by AA Polymorphism in Controls")
