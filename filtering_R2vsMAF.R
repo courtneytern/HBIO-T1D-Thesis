@@ -97,20 +97,20 @@ oneKG<- fread("./data/1KG_imputed_032321/chr6.info")
 # do for pdf and jpg
 # jpeg(file="/m/CPHG/T1DGC/USERS/cat7ep/r2mafQC.jpg")
 #jpeg(file="./project/figures/040122_1KG_IMPUTED_r2mafQC.jpg")
-ggplot( multi , aes(x = Rsq, y = MAF)) + 
+ggplot( oneKG , aes(x = Rsq, y = MAF)) + 
   geom_point(size = 1.5, color = "black") +
   geom_vline(xintercept=0.3, color="red") + geom_hline(yintercept=0.005, color="red") +
-  labs(x = "Rsq", y = "MAF") +
-  ggtitle("Imputed on Multiethnic Reference Panel") +
+  labs(x = "Rsq", y = "Allele Frequency") +
+  ggtitle("Imputed on 1KG Reference Panel") +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))
 #dev.off()
 
 #jpeg(file="/nv/vol185/T1DGC/USERS/cat7ep/project/figures/040122_1KG_IMPUTED_r2mafQC_filtered.jpg")
-ggplot( multi[((Rsq>0.5)&(MAF>0.005)),] , aes(x = Rsq, y = MAF)) + 
+ggplot( oneKG[((Rsq>0.5)&(MAF>0.005)),] , aes(x = Rsq, y = MAF)) + 
   geom_point(size = 1.5, color = "black") +
-  labs(x = "Rsq", y = "MAF") +
-  ggtitle("Imputed on Multiethnic Reference Panel (Filtered)") +
+  labs(x = "Rsq", y = "Allele Frequency") +
+  ggtitle("Imputed on 1KG Reference Panel (Filtered)") +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))
 #dev.off()
