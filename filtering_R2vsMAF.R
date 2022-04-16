@@ -28,7 +28,7 @@ filterSteps<- function(info.file.path){
   print(filtered_out)
   
   # Do the filtering 
-  T1DGC_6_filtered <- T1DGC_6[(T1DGC_6['Rsq']>0.5)|(T1DGC_6['MAF']>0.005),]
+  T1DGC_6_filtered <- T1DGC_6[(T1DGC_6['Rsq']>0.5)&(T1DGC_6['MAF']>0.005),]
   length(T1DGC_6_filtered[[1]])
   # 53673 lines (minus header) after filtering
   
