@@ -17,50 +17,59 @@ module load anaconda
 cd /nv/vol185/T1DGC/USERS/cat7ep/HLA-TAPAS
 
 vcfPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
-vcfFileName="filtered021322.recode.vcf.gz"
+vcfFileName="T1DGC_HCE_unrelated_EUR.vcf"
 
-bimPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
-bimFile="filtered021322.bim"
+bPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
+bimFile="T1DGC_HCE_unrelated_EUR.bim"
+famFile="T1DGC_HCE_unrelated_EUR.fam"
 
 filePath="/nv/vol185/T1DGC/USERS/cat7ep/data"
-famFile="T1DGC_HCE-noheader.fam"
-phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
+phenoFile="T1DGC_HCE-noheader_recode.phe"
+covarFile="EUR_covars_final.txt" # recode to FID,IID,PC1-10
 
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus"
 
-python -m HLAassoc OMNIBUS \
+python -m HLAassoc OMNIBUS_LOGISTIC \
     --vcf $vcfPath/${vcfFileName} \
-    --bim $bimPath/${bimFile} \
-    --fam $filePath/${famFile} \
+    --bim $bPath/${bimFile} \
+    --fam $bPath/${famFile} \
+    --covars $outPath/${covarFile} \
     --pheno $filePath/${phenoFile} \
-    --out $outPath/multiethnic.OMNIBUS \
-    --aa-only \
-    --maf-threshold 0
+    --out $outPath/T1DGC_HCE_EUR.mds \
+    --maf-threshold 0.01
 
 ##################
 ## AFR and AMR ###
 ##################
 cd /nv/vol185/T1DGC/USERS/cat7ep/HLA-TAPAS
 
+pop="AMR"
 vcfPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
-AFR_vcf="T1DGC_HCE_AFR-only.vcf"
-AMR_vcf="T1DGC_HCE_AMR-only.vcf"
+vcfFile="T1DGC_HCE_${pop}-only.vcf"
 
-bimPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
-AFR_bim="T1DGC_HCE_AFR-only.bim"
-AMR_bim="T1DGC_HCE_AMR-only.bim"
+bPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
+bimFile="T1DGC_HCE_${pop}_updated_fam.bim"
+famFile="T1DGC_HCE_${pop}_updated_fam.fam"
 
 filePath="/nv/vol185/T1DGC/USERS/cat7ep/data"
-AFR_fam="T1DGC_HCE_cc_AFR-2021-01-20.fam"
-AMR_fam="T1DGC_HCE_cc_AMR-2021-01-20.fam"
-phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
+phenoFile="T1DGC_HCE-noheader_recode.phe" # recode pheno to no header; 0=control, 1=case
+covarFile="${pop}_covars_final.txt" # recode to FID,IID,PC1-10
 
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/omnibus"
 
-python -m HLAassoc OMNIBUS \
-    --vcf $vcfPath/${AFR_vcf} \
-    --bim $bimPath/${AFR_bim} \
-    --fam $filePath/${AFR_fam} \
+python -m HLAassoc OMNIBUS_LOGISTIC \
+    --vcf $vcfPath/${vcfFile} \
+    --bim $bPath/${bimFile} \
+    --fam $bPath/${famFile} \
+    --covars $outPath/${covarFile} \
     --pheno $filePath/${phenoFile} \
-    --out $outPath/T1DGC_HCE_AFR.OMNIBUS.noaa \
-    --maf-threshold 0
+    --out $outPath/T1DGC_HCE_${pop}.mds \
+    --maf-threshold 0.01
+
+## Add CHR 6 col for locuszoom
+cd $outPath
+
+pop="EUR"
+awk -F'\t' '{ if(NR!=1){print$0,"\t"6} }' T1DGC_HCE_${pop}.mds.haplo.txt > locuszoom.${pop}.mds.haplo.txt
+sort -k 4 locuszoom.${pop}.mds.haplo.txt > locuszoom.${pop}2.mds.haplo.txt
+mv locuszoom.${pop}2.mds.haplo.txt locuszoom.${pop}.mds.haplo.txt
