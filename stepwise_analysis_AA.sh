@@ -8,16 +8,18 @@
 ##############################
 module load plink
 
-pop="AFR"
+filePath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
+
+pop="AMR"
 filterPath="/nv/vol185/T1DGC/USERS/cat7ep/data"
 phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
 keepFile="T1DGC_HCE_${pop}_FINAL_sample_list.txt"
-covarFile="${pop}_pc_040122_FINAL.txt" # my generated PCs
+covarFile="${pop}_mdspc_FINAL.txt" # my generated PCs
 # covarFile="T1DGC_HCE_${pop}_FINAL_cov.txt"
-conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/generatedPCs"
+conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
 # conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
 conditionList="${pop}_condition_list.txt"
-outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/generatedPCs"
+outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
 # outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
 cd $outPath
 outStem="${pop}_AA_step2"
@@ -42,11 +44,11 @@ mv ./${outStem}.2.assoc.logistic ./${outStem}.assoc.logistic
 filePath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
 filterPath="/nv/vol185/T1DGC/USERS/cat7ep/data"
 keepFile="tmp_5_fam_EUR_cc_unrelated.txt"
-covarFile="EUR_pc_040122_FINAL.txt" # my generated
-conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/generatedPCs"
+covarFile="EUR_mdspc_FINAL.txt"
+conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
 conditionList="EUR_condition_list.txt"
-outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/generatedPCs"
-outStem="EUR_AA_step5"
+outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
+outStem="EUR_AA_step0"
 
 ## DON'T FORGET TO CHANGE STEP NAME
 
@@ -61,6 +63,7 @@ grep -E "CHR|AA" ./${outStem}.assoc.logistic > ./${outStem}.2.assoc.logistic
 rm ./${outStem}.assoc.logistic
 mv ./${outStem}.2.assoc.logistic ./${outStem}.assoc.logistic
 #go to findHLA_stepwise.R and repeat until no more significant variants
+
 # when done. clean up folder
 
 #########################
