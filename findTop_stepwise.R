@@ -3,23 +3,34 @@ library(tidyr)
 library(data.table)
 
 # setwd to /nv/vol185/T1DGC/USERS/cat7ep/
-setwd("./data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA/")
+setwd("./data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/")
 
 # change step number appropriately
-logFile<- fread("./AMR_HLA_step1.assoc.logistic",header=T)
+logFile<- fread("./EUR_AA_step5.assoc.logistic",header=T)
 logFile<- logFile[order(logFile$P),]
 logFile
-
-# calc p-val as EUR=0.05/(99*tests) AMR=0.05/(107*tests) AFR=0.05/(104*tests)
-# 368 for AFR AA, 357 AMR AA, 345 EUR
-## where tests=step+1
 ###### HLA
 ## length(logFile[(str_count(logFile$SNP,":")==1),][[1]])
 ##### AA 
 ## length(unique(separate(data.table(SNP=logFile$SNP),SNP,sep="_",into=c("1","2","3","4","5","6"))[,1:3])[[1]])
 # pull the top significant two-digit HLA allele from logFile
 # copy top allele into string 
-fwrite(list("AA_DRB1_-1_32557434_exon1_S"),file="./EUR_condition_list.txt",append=T)
+fwrite(list("AA_B_97_31324201_exon3_CLT"),file="./EUR_condition_list.txt",append=T)
+
+
+####
+## OMNIBUS
+#####
+
+setwd("./data/multiethnic_imputed/chr_6/omnibus")
+haploFile<- fread("./T1DGC_HCE_AFR.omnibus.haplo.txt",header=T)
+haploFile<- haploFile[order(haploFile$PVALUE),]
+haploFile
+fwrite(list("AA_DQA1_-16_32605258_exon1_L"),file="./AFR_condition_list.txt",append=T)
+
+# calc p-val as EUR=0.05/(99*tests) AMR=0.05/(107*tests) AFR=0.05/(104*tests)
+# 368 for AFR AA, 357 AMR AA, 345 EUR
+## where tests=step+1
 # go back to runPlink_logistic.sh and use updated condition list 
 
 # We use a bonferroni corrected p-value = 0.05/(number of tests) 
