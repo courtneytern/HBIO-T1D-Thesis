@@ -27,7 +27,7 @@ dat_HLA
 
 # plot
 # case
-ggplot(dat_HLA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+ggplot(dat_HLA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_col(width=0.7,position="dodge") +
   scale_fill_manual(values=c("lightpink","palevioletred","deeppink4")) +
   theme(axis.text.x=element_text(angle=45,hjust=1)) + 
   xlab("HLA Allele") + ylab("Allele Frequency") +
