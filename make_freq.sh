@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Make summary table for filtered, multiethnic-imputed VCF
+# Make frequency file for each variant in each population, separated by case and control
+# Need the sample list to keep one population at a time
 module load plink
 
 pop="AMR"

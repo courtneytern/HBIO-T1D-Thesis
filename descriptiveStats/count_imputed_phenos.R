@@ -5,7 +5,6 @@
 
 #################
 ## find first and last HLA position in the data that was uploaded to the imputation server
-
 setwd("/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6")
 vcf.file<- read.table("chr6.dose.vcf") # this is pretty slow in R. do it in awk later if you need to do it again
 # CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT
@@ -20,14 +19,14 @@ max(positions)
 vcf.file[positions==min(positions),]$V3
 
 #################
-## Count male/female and case/control in AFR and AMR 
+## Count number of male/female and case/control
 
-#setwd to cat7ep
 setwd("./data")
 famFileAFR<- read.table("T1DGC_HCE_cc_AFR-2021-01-20.fam")
 famFileAMR<- read.table("T1DGC_HCE_cc_AMR-2021-01-20.fam")
 famFileEUR<- read.table("./data/multiethnic_imputed/chr_6/T1DGC_HCE_unrelated_EUR.fam")
 
+#sex
 countSex<- function(famFile){
   male<- length(famFile$V5[famFile$V5==1]) 
   female<- length(famFile$V5[famFile$V5==2]) 
@@ -37,6 +36,7 @@ countSex(famFileAFR)
 countSex(famFileAMR)
 countSex(famFileEUR)
 
+# case/control status
 countCaseControl<- function(famFile){
   control<- length(famFile$V5[famFile$V6==1]) 
   case<- length(famFile$V5[famFile$V6==2]) 

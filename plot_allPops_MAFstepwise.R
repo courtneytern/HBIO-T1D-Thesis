@@ -1,11 +1,9 @@
 # Make a plot to compare all three ancestry groups.
-# Generate a bar chart with MAF as the y axis
-# and each HLA allele from the conditional analysis as the x axis
+# Generate a bar chart. Y axis: allele freq. X axis:each significant variant from the conditional analysis
 library(data.table)
 library(ggplot2)
 
 setwd("./data/multiethnic_imputed/chr_6")
-
 AFRfrq<- fread("filtered041222_AFR.frq.cc")
 AMRfrq<- fread("filtered041222_AMR.frq.cc")
 EURfrq<- fread("filtered041222_EUR.frq.cc")
@@ -13,6 +11,7 @@ EURfrq<- fread("filtered041222_EUR.frq.cc")
 ##########
 ## HLA ###
 ##########
+# list of all significant HLA alleles from conditional analysis 
 HLA<- list("HLA_DRB1*03:01","HLA_DQA1*03:01","HLA_DQB1*06:02","HLA_DQB1*02:01",
            "HLA_DQB1*03:02","HLA_DRB1*04:01","HLA_DQB1*03:01","HLA_B*39:06",
            "HLA_DQB1*03:03")
@@ -27,13 +26,13 @@ dat_HLA
 
 # plot
 # case
-ggplot(dat_HLA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_col(width=0.7,position="dodge") +
+ggplot(dat_HLA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_col(width=0.6,position="dodge") +
   scale_fill_manual(values=c("lightpink","palevioletred","deeppink4")) +
   theme(axis.text.x=element_text(angle=45,hjust=1)) + 
   xlab("HLA Allele") + ylab("Allele Frequency") +
   labs(title="Allele Frequency by HLA Allele in Cases")
 # control
-ggplot(dat_HLA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+ggplot(dat_HLA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_col(width=0.6,position="dodge") +
   scale_fill_manual(values=c("lightskyblue","cornflowerblue","blue4")) +
   theme(axis.text.x=element_text(angle=45,hjust=1)) + 
   xlab("HLA Allele") + ylab("Allele Frequency") +
@@ -43,12 +42,10 @@ ggplot(dat_HLA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_bar(stat="identity",position=
 ## AA ###
 #########
 setwd("./data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA/")
+# make list of all associated amino acids
 AFRtop<- fread("./AFR_top_stats.txt",header=F)
 AMRtop<- fread("./AMR_top_stats.txt",header=F)
 EURtop<- fread("./EUR_top_stats.txt",header=F)
-# AFRtop2<- fread("./generatedPCs/AFR_top_stats.txt",header=F)
-# AMRtop2<- fread("./generatedPCs/AMR_top_stats.txt",header=F)
-# EURtop2<- fread("./generatedPCs/EUR_top_stats.txt",header=F)
 AA<- rbind(AFRtop[,"V2"],AMRtop[,"V2"],EURtop[,"V2"])
 
 dat_AA<- data.table()
@@ -61,13 +58,13 @@ dat_AA
 
 # plot
 # case
-ggplot(dat_AA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+ggplot(dat_AA,aes(x=SNP,y=MAF_A,fill=pop)) + geom_col(width=0.6,position="dodge") +
   scale_fill_manual(values=c("lightpink","palevioletred","deeppink4")) +
   theme(axis.text.x=element_text(angle=70,hjust=1)) + 
   xlab("Amino Acid Polymorphism") + ylab("Allele Frequency") +
   labs(title="Allele Frequency by AA Polymorphism in Cases")
 # control
-ggplot(dat_AA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_bar(stat="identity",position="dodge") +
+ggplot(dat_AA,aes(x=SNP,y=MAF_U,fill=pop)) + geom_col(width=0.6,position="dodge") +
   scale_fill_manual(values=c("lightskyblue","cornflowerblue","blue4")) +
   theme(axis.text.x=element_text(angle=70,hjust=1)) + 
   xlab("Amino Acid Polymorphism") + ylab("Allele Frequency") +

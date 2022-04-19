@@ -8,7 +8,7 @@ module load plink
 
 wd="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
 vcfFileName="chr6.dose.vcf.gz"
-excludeFile="filteredOutSNPs.txt"
+excludeFile="filteredOutSNPs.txt" # generated from filtering_R2vsMAF.R
 
 cd $wd
 

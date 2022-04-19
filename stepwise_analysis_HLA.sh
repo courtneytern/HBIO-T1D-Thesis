@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Run the stepwise condition analysis on logistic output
+## Run the stepwise condition analysis using logistic regression
 
 ##############################
 ## Split data by allele type #
@@ -10,9 +10,9 @@
 # grep -E "CHR|AA" ./EUR_only.assoc.logistic > ./EUR_AA.assoc.logistic
 # grep -E "CHR|HLA" ./EUR_only.assoc.logistic > ./EUR_HLA.assoc.logistic
 
-######################
-## Update covar file #
-######################
+########################
+## Reformat covar file #
+########################
 pop="EUR"
 path="/nv/vol185/T1DGC/USERS/cat7ep/data/"
 ogCovar="tmp_10_${pop}_mdspc.txt"
@@ -28,20 +28,15 @@ vcfFileName="filtered032722.vcf.gz"
 
 pop="AMR"
 filterPath="/nv/vol185/T1DGC/USERS/cat7ep/data"
-phenoFile="T1DGC_HCE-2021-10-07_CT.phe"
 keepFile="T1DGC_HCE_${pop}_FINAL_sample_list.txt"
-# covarFile="${pop}_pc_040122_FINAL.txt" # my generated PCs
-#covarFile="T1DGC_HCE_${pop}_FINAL_cov.txt"
 covarFile="${pop}_mdspc_FINAL.txt"
-# conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA/generatedPCs"
 conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
 conditionList="${pop}_condition_list.txt"
-# outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA/generatedPCs"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
 cd $outPath
-outStem="${pop}_HLA_step2"
+outStem="${pop}_HLA_step0"
 ## DON'T FORGET TO CHANGE STEP NAME
-# no condition list for step0
+# remove --condition-list for step0
 
 plink --bfile $filePath/T1DGC_HCE_${pop}_updated_fam --logistic hide-covar \
   --keep $filterPath/${keepFile} --covar $filterPath/${covarFile} \
@@ -52,8 +47,8 @@ plink --bfile $filePath/T1DGC_HCE_${pop}_updated_fam --logistic hide-covar \
 grep -E "CHR|HLA" ./${outStem}.assoc.logistic > ./${outStem}.2.assoc.logistic
 rm ./${outStem}.assoc.logistic
 mv ./${outStem}.2.assoc.logistic ./${outStem}.assoc.logistic
-#go to findHLA_stepwise.R and repeat until no more significant variants
-# when done, clean up folder
+#go to getLead_stepwise.R. Come back to this step and change step name
+# repeat until no more significant variants
 
 ######################
 ## Stepwise on EUR ###
@@ -61,13 +56,13 @@ mv ./${outStem}.2.assoc.logistic ./${outStem}.assoc.logistic
 filePath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
 filterPath="/nv/vol185/T1DGC/USERS/cat7ep/data"
 keepFile="tmp_5_fam_EUR_cc_unrelated.txt"
-covarFile="EUR_mdspc_FINAL.txt" # my generated
+covarFile="EUR_mdspc_FINAL.txt"
 conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
 conditionList="EUR_condition_list.txt"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
-outStem="EUR_HLA_step8"
-
+outStem="EUR_HLA_step0"
 ## DON'T FORGET TO CHANGE STEP NAME
+# no --condition-list line on step0
 
 plink --bfile $filePath/T1DGC_HCE_updated_fam --logistic hide-covar \
   --keep $filterPath/${keepFile} --covar $filterPath/${covarFile} \
@@ -75,16 +70,16 @@ plink --bfile $filePath/T1DGC_HCE_updated_fam --logistic hide-covar \
   --maf .01 --ci 0.95 --allow-no-sex \
   --out $outPath/${outStem}
 # keep only the HLA lines
-# cd $outPath
 grep -E "CHR|HLA" ./${outStem}.assoc.logistic > ./${outStem}.2.assoc.logistic
 rm ./${outStem}.assoc.logistic
 mv ./${outStem}.2.assoc.logistic ./${outStem}.assoc.logistic
-#go to findTop_stepwise.R and repeat until no more significant variants
-# when done. clean up folder
+#go to getLead_stepwise.R. Come back to this step and change step name
+# repeat until no more significant variants
 
 #########################
 ## Pull summary stats ###
 #########################
+# after all stepwise done
 cd /nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA
 pop="EUR"
 # get how many items in SNP list

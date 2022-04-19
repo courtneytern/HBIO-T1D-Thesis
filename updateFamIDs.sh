@@ -1,9 +1,10 @@
 #! /bin/bash
 
 ## This script will re-insert family IDs into imputation data
+## This requires the complete family/phenotype information in a .fam file ($releasefamilyfam)
 module load plink
 
-pop="AFR"
+pop="AFR" # change pop to AFR, AMR, and EUR as appropriate, then re run
 releasepath="/nv/vol185/T1DGC/USERS/cat7ep/data"
 releasefamilyfam="T1DGC_HCE_cc_${pop}-2021-01-20.fam"
 vcfPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
@@ -54,7 +55,7 @@ plink --memory 15000 --bfile tmp_imp_vcf_${pop}_fam_chr6_4 \
       --pheno tmp_imp_vcf_${pop}_update_case_fam.txt --make-bed \
       --out tmp_imp_vcf_${pop}_fam_chr6 &>> $logfile
 
-##### PAUSE. Look at folder and decide where to move stuff
+##### PAUSE. Look at folder and decide where to move files
 # Copy the final updated .fam .bed .bim files
   cp $temp/tmp_imp_vcf_${pop}_fam_chr6.fam $outPath/T1DGC_HCE_${pop}_updated_fam.fam
   cp $temp/tmp_imp_vcf_${pop}_fam_chr6.bed $outPath/T1DGC_HCE_${pop}_updated_fam.bed
