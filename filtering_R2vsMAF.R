@@ -103,11 +103,11 @@ multi<- fread("./data/multiethnic_imputed/chr_6/chr6.info")
 oneKG<- fread("./data/1KG_imputed_032321/chr6.info")
 
 # pre-filtered
-ggplot( oneKG , aes(x = Rsq, y = MAF)) + 
+ggplot( multi , aes(x = Rsq, y = MAF)) + 
   geom_point(size = 1.5, color = "black") +
-  geom_vline(xintercept=0.3, color="red") + geom_hline(yintercept=0.005, color="red") +
+  geom_vline(xintercept=0.5, color="red") + geom_hline(yintercept=0.005, color="red") +
   labs(x = "Rsq", y = "Allele Frequency") +
-  ggtitle("Imputed on 1KG Reference Panel") +
+  ggtitle("Imputed on Multiethnic Reference Panel") +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))
 
