@@ -34,7 +34,7 @@ conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logi
 conditionList="${pop}_condition_list.txt"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
 cd $outPath
-outStem="${pop}_HLA_step0"
+outStem="${pop}_HLA_step3"
 ## DON'T FORGET TO CHANGE STEP NAME
 # remove --condition-list for step0
 
@@ -60,7 +60,7 @@ covarFile="EUR_mdspc_FINAL.txt"
 conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
 conditionList="EUR_condition_list.txt"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA"
-outStem="EUR_HLA_step0"
+outStem="EUR_HLA_step12"
 ## DON'T FORGET TO CHANGE STEP NAME
 # no --condition-list line on step0
 
@@ -81,7 +81,7 @@ mv ./${outStem}.2.assoc.logistic ./${outStem}.assoc.logistic
 #########################
 # after all stepwise done
 cd /nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_HLA
-pop="EUR"
+pop="AFR"
 # get how many items in SNP list
 n=`wc -l ${pop}_condition_list.txt|awk '{print $1}'`
 

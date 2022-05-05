@@ -9,32 +9,32 @@ library(data.table)
 ##########
 ## AFR ###
 ##########
-AFR<- fread("./data/tmp_10_AFR_mdspc.txt") # PCs from Dominika 
-AFR_5<- AFR[,c(1,2,5:11)] # keep only first 5 PCs 
+AFR<- fread("./data/tmp_10_AFR_mdspc.txt") # MDS from Dominika 
+AFR_5<- AFR[,c(1,2,5:11)] # keep only first 5 Dimensions 
 #color by sex (male=1, female=2)
 AFRPlot<- splom(AFR_5[,5:9], groups=AFR_5$SEX, auto.key=list(space="right",text=c("Male","Female")),
-                main="AFR PC Associations by Sex", xlab="PCs 1-5",ylab="PCs 1-5",
+                main="AFR MDS Dimensions by Sex", xlab="Dimensions 1-5",ylab="Dimensions 1-5",
                 par.settings = list(superpose.symbol = list(col = c("darkorange", "darkblue"))) 
                 )
 # color by Case-Control
 AFRPlot2<- splom(AFR_5[,5:9], groups=AFR_5$AFF, auto.key=list(space="right",text=c("Control","Case")),
-                main="AFR PC Associations by Case-Control", xlab="PCs 1-5",ylab="PCs 1-5",
+                main="AFR MDS Dimensions by Case-Control", xlab="Dimensions 1-5",ylab="Dimensions 1-5",
                 par.settings = list(superpose.symbol = list(col = c("deeppink3", "darkgray"))) 
                 )
 
 ##########
 ## AMR ###
 ##########
-AMR<- fread("./data/tmp_10_AMR_mdspc.txt") # PCs from Dominika
-AMR_5<- AMR[,c(1,2,5:11)] # keep only first 5 PCs 
+AMR<- fread("./data/tmp_10_AMR_mdspc.txt") # MDS from Dominika
+AMR_5<- AMR[,c(1,2,5:11)] # keep only first 5 Dimensions 
 # color by sex
 AMRPlot<- splom(AMR_5[,5:9], groups=AMR_5$SEX, auto.key=list(space="right",text=c("Male","Female")), 
-                main="AMR PC Associations by Sex", xlab="PCs 1-5",ylab="PCs 1-5",
+                main="AMR MDS Dimensions by Sex", xlab="Dimensions 1-5",ylab="Dimensions 1-5",
                 par.settings = list(superpose.symbol = list(col = c("darkorange", "darkblue"))) 
                 )
 # color by Case-Control
 AMRPlot2<- splom(AMR_5[,5:9], groups=AMR_5$AFF, auto.key=list(space="right",text=c("Control","Case")), 
-                main="AMR PC Associations by Case-Control", xlab="PCs 1-5",ylab="PCs 1-5",
+                main="AMR MDS Dimensions by Case-Control", xlab="Dimensions 1-5",ylab="Dimensions 1-5",
                 par.settings = list(superpose.symbol = list(col = c("deeppink3", "darkgray"))) 
                 )
 
@@ -44,11 +44,11 @@ AMRPlot2<- splom(AMR_5[,5:9], groups=AMR_5$AFF, auto.key=list(space="right",text
 EUR<- fread("./data/tmp_10_EUR_mdspc.txt") 
 EUR_5<- EUR[,c(1,2,5:11)]
 EUR_sex<- splom(EUR[,7:11], groups=EUR_5$SEX, auto.key=list(space="right",text=c("Male","Female")), 
-               main="EUR PC Associations by Sex", xlab="PCs 1-5",ylab="PCs 1-5",
+               main="EUR MDS Dimensions by Sex", xlab="Dimensions 1-5",ylab="Dimensions 1-5",
                par.settings = list(superpose.symbol = list(col = c("darkorange", "darkblue"))) 
 )
 EUR_cc<- splom(EUR[,7:11], groups=EUR_5$AFF, auto.key=list(space="right",text=c("Control","Case")), 
-                 main="EUR PC Associations by Case-Control", xlab="PCs 1-5",ylab="PCs 1-5",
+                 main="EUR MDS Dimensions by Case-Control", xlab="Dimensions 1-5",ylab="Dimensions 1-5",
                  par.settings = list(superpose.symbol = list(col = c("deeppink3", "darkgray"))) 
 )
 

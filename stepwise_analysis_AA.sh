@@ -48,7 +48,7 @@ covarFile="EUR_mdspc_FINAL.txt"
 conditionPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
 conditionList="EUR_condition_list.txt"
 outPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6/logistic_reg/stepwise_AA"
-outStem="EUR_AA_step0"
+outStem="EUR_AA_step8"
 
 ## DON'T FORGET TO CHANGE STEP NAME
 
@@ -75,7 +75,7 @@ pop="EUR"
 n=`wc -l ${pop}_condition_list.txt|awk '{print $1}'`
 
 # add header
-awk 'BEGIN{print "CHR\tSNP\tBP\tA1\tTEST\tNMISS\tOR\tSE\tL95\tU95\STAT\tP"}' ${pop}_top_stats.txt > ${pop}_top_stats.txt
+awk 'BEGIN{print "CHR\tSNP\tBP\tA1\tTEST\tNMISS\tOR\tSE\tL95\tU95\tSTAT\tP"}' ${pop}_top_stats.txt > ${pop}_top_stats.txt
 # loop through SNPs
 for (( i=0;i<$n;i++ )); do
   allele=`cat ${pop}_condition_list.txt | awk -v j=$(($i+1)) '{if(NR==j){print $0}}'`

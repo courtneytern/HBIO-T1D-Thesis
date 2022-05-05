@@ -12,9 +12,11 @@ EURfrq<- fread("filtered041222_EUR.frq.cc")
 ## HLA ###
 ##########
 # list of all significant HLA alleles from conditional analysis 
-HLA<- list("HLA_DRB1*03:01","HLA_DQA1*03:01","HLA_DQB1*06:02","HLA_DQB1*02:01",
-           "HLA_DQB1*03:02","HLA_DRB1*04:01","HLA_DQB1*03:01","HLA_B*39:06",
-           "HLA_DQB1*03:03")
+HLA<- list("HLA_B*39:06","HLA_DPB1*04:02","HLA_DQA1*01:03","HLA_DQA1*03:01",
+           "HLA_DQB1*02:01","HLA_DQB1*03:01","HLA_DQB1*03:02","HLA_DQB1*03:03",
+           "HLA_DQB1*05:03","HLA_DQB1*06:02",
+           "HLA_DRB1*03:01","HLA_DRB1*04:01","HLA_DRB1*07:01"
+           )
 
 dat_HLA<- data.table()
 for(i in 1:length(HLA)){

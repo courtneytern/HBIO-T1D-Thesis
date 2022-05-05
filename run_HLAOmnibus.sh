@@ -35,15 +35,16 @@ python -m HLAassoc OMNIBUS_LOGISTIC \
     --fam $bPath/${famFile} \
     --covars $outPath/${covarFile} \
     --pheno $filePath/${phenoFile} \
-    --out $outPath/T1DGC_HCE_EUR.mds \
-    --maf-threshold 0.01
+    --out $outPath/T1DGC_HCE_EUR_AA.mds \
+    --maf-threshold 0.01 \
+    --aa-only
 
 ##################
 ## AFR and AMR ###
 ##################
 cd /nv/vol185/T1DGC/USERS/cat7ep/HLA-TAPAS
 
-pop="AMR"
+pop="AFR"
 vcfPath="/nv/vol185/T1DGC/USERS/cat7ep/data/multiethnic_imputed/chr_6"
 vcfFile="T1DGC_HCE_${pop}-only.vcf"
 
@@ -63,13 +64,14 @@ python -m HLAassoc OMNIBUS_LOGISTIC \
     --fam $bPath/${famFile} \
     --covars $outPath/${covarFile} \
     --pheno $filePath/${phenoFile} \
-    --out $outPath/T1DGC_HCE_${pop}.mds \
-    --maf-threshold 0.01
+    --out $outPath/T1DGC_HCE_${pop}_AA.mds \
+    --maf-threshold 0.01 \
+    --aa-only
 
 ## Add CHR 6 col for locuszoom
 cd $outPath
 
 pop="EUR"
-awk -F'\t' '{ if(NR!=1){print$0,"\t"6} }' T1DGC_HCE_${pop}.mds.haplo.txt > locuszoom.${pop}.mds.haplo.txt
-sort -k 4 locuszoom.${pop}.mds.haplo.txt > locuszoom.${pop}2.mds.haplo.txt
-mv locuszoom.${pop}2.mds.haplo.txt locuszoom.${pop}.mds.haplo.txt
+awk -F'\t' '{ if(NR!=1){print$0,"\t"6} }' T1DGC_HCE_${pop}_AA.mds.txt > locuszoom.${pop}_AA.mds.txt
+sort -k 4 locuszoom.${pop}_AA.mds.txt > locuszoom.${pop}_AA2.mds.txt
+mv locuszoom.${pop}_AA2.mds.txt locuszoom.${pop}_AA.mds.txt

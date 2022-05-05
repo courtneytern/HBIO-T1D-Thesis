@@ -22,20 +22,20 @@ This repository contains the code used in Courtney Tern's thesis for the Disting
    1. Make Manhattan plot on logistic regression (step 0)
 
 ### Make Plots
-* plot_PCs.R
-  - Makes scatter plot matrix comparing all pairwsie combinations of PCs
-  - Use to verify that none of the PCs are case-control status or sex
-* plot_allPops_MAFstepwise.R
-  - Makes bar chart of MAF in each population for all significantly associated variants from the conditional stepwise analysis
+* plot_MDS.R
+  - Makes scatter plot matrix comparing all pairwsie combinations of MDS dimensions
+  - Use to verify that none of the dimensions are case-control status or sex
+* plot_allPops_AFstepwise.R
+  - Makes bar chart of AF in each population for all significantly associated variants from the conditional stepwise analysis
 
 #### /descriptiveStats
 * count_imputed_phenos.R
   - Get first and last imputed genetic position
   - Counts sex (M/F) and case/control status from .fam file
-* MAF_summary.R
+* AF_summary.R
   - Requires .frq file
   - Generates data for Table 4
-* makeTable_HLA_MAF.R
+* makeTable_HLA_AF.R
   - Requires .frq.cc file
   - Makes supplemental table with HLA and AA allele frequencies by case and control for all populations
 
