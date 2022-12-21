@@ -4,11 +4,11 @@ This repository contains the code used in Courtney Tern's thesis for the Disting
 
 ### QC/Analysis Pipeline
 
-1. filtering_R2vsMAF.R
+1. filtering_R2vsAF.R
    1. Counts number of each type of imputed variant
    2. Generates data for table 3
-   3. Filters by Rsq and MAF and returns the SNPs that should be filtered out
-   4. Plots the Rsq vs MAF for 1KG and multiethnic reference panel
+   3. Filters by Rsq and AF and returns the SNPs that should be filtered out
+   4. Plots the Rsq vs AF for 1KG and multiethnic reference panel
 2. filterVCF_makeBinary.sh
 3. updateFamIDs.sh
 4. make_freq.sh
